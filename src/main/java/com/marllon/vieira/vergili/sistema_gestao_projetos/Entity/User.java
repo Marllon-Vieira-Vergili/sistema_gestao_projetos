@@ -1,4 +1,5 @@
 package com.marllon.vieira.vergili.sistema_gestao_projetos.Entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.marllon.vieira.vergili.sistema_gestao_projetos.Entity.Enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -25,7 +26,7 @@ import java.util.Set;
  * */
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -37,7 +38,7 @@ public class User {
 
     @Id
     @Setter(AccessLevel.NONE)
-    @Column(name = "id")
+    @Column(nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private Long id;
@@ -56,15 +57,22 @@ public class User {
             message = "A senha deve ter pelo menos 6 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial"
     )
 
-    @Min(value = 6, message = "A senha deve conter pelo menos 6 caracteres")
+    @Size(min = 6, message = "A senha deve conter pelo menos 6 caracteres")
     private String password;
 
+
     @NotBlank(message = "Nome completo não pode ficar vazio")
+    @Size(min = 3, max = 100, message = "Nome completo deve possuir no mínimo 3 caracteres e no máximo 100 caracteres")
     @Column(nullable = false)
+    @Pattern(
+            regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ]+$",
+            message = "Nome deve possuir apenas letras"
+    )
     private String fullName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @NotNull(message = "O campo de acesso de usuário não pode ficar vazio")
     private UserRole Role;
 
     @Column(name = "avatarURL", length = 255)
@@ -74,23 +82,23 @@ public class User {
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean active;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false, updatable = false)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @CreatedDate
     private LocalDateTime createdAt;
 
     @Column(nullable = false, updatable = true)
-    @NotBlank
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @CreatedDate
     private LocalDateTime updatedAt;
 
-
+    /**RELACIONAMENTOS**/
 
     /**Relacionamento de Muitos Uusários para muitos projetos*/
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "project_members", joinColumns = @JoinColumn(name = "project_id"))
+    @JoinTable(name = "project_members", joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<Project> project;
 
     /**Relacionamento de um usuário para muitas tarefas*/
