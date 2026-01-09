@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,7 @@ import java.util.Set;
 @EqualsAndHashCode(of = "id")
 @Getter
 @Setter
-
-public class User {
+public class User implements Serializable {
 
 
     @Id
@@ -50,6 +50,15 @@ public class User {
     private String email;
 
 
+    @NotBlank(message = "Nome completo não pode ficar vazio")
+    @Size(min = 3, max = 100, message = "Nome completo deve possuir no mínimo 3 caracteres e no máximo 100 caracteres")
+    @Column(nullable = false)
+    @Pattern(
+            regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ]+$",
+            message = "Nome deve possuir apenas letras"
+    )
+    private String fullName;
+
     @NotBlank(message = "O campo senha não pode ficar vazio")
     @Column(name = "password", nullable = false)
     @Pattern(
@@ -61,14 +70,7 @@ public class User {
     private String password;
 
 
-    @NotBlank(message = "Nome completo não pode ficar vazio")
-    @Size(min = 3, max = 100, message = "Nome completo deve possuir no mínimo 3 caracteres e no máximo 100 caracteres")
-    @Column(nullable = false)
-    @Pattern(
-            regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ]+$",
-            message = "Nome deve possuir apenas letras"
-    )
-    private String fullName;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

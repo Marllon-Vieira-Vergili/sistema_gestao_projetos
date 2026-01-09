@@ -7,8 +7,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
 
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @Getter
 @Setter
-public class Project {
+public class Project implements Serializable {
 
 
     @Id
@@ -76,6 +77,9 @@ public class Project {
     @CreatedDate
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created-by", nullable = false)
+    private User createdBy;
 
     /**RELACIONAMENTOS**/
     @ManyToMany(fetch = FetchType.LAZY)

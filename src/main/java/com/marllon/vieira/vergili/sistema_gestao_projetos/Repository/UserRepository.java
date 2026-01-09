@@ -17,10 +17,13 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    public Optional<String> findByEmail(String email);
+    //Encontrar usuário pelo email informado
+    public Optional<User> findByEmail(String email);
 
+    //Retornar true ou false se existe usuário com email digitado
     public boolean existsByEmail(String email);
 
-    public List<User> findByRoleAndActiveTrue(UserRole role);
+    //Retornar lista de usuário encontrando pela regra de acesso
+    public List<User> findByRoleAndActiveTrue(UserRole role, boolean active);
 
 }

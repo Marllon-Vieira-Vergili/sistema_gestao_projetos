@@ -1,13 +1,10 @@
 package com.marllon.vieira.vergili.sistema_gestao_projetos.DTO.request.user;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDateTime;
 
 public record UpdateUserRequest(
 

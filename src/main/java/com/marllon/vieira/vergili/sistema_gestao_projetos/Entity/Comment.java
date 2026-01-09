@@ -9,6 +9,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @Table(name = "comments")
-public class Comment {
+public class Comment implements Serializable {
 
 
 

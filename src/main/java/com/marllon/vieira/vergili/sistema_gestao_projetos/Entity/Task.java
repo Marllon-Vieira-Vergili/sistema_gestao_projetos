@@ -11,6 +11,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.Set;
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task {
+public class Task implements Serializable {
 
     @Id
     @Column(nullable = false, unique = true)
